@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./App.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./pages/HomePage";
@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkAuthAsync, selectUserChecked } from "./features/auth/authSlice";
 import PostDetailPage from "./pages/PostDetailPage";
 import Protected from "./features/auth/components/Protected";
+import ProfilePage from "./pages/ProfilePage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +51,22 @@ const router = createBrowserRouter([
       <Protected>
         <PostDetailPage></PostDetailPage>
       </Protected>
+    ),
+  },
+  {
+    path: "/profile/:id",
+    element: (
+      <Protected>
+        <ProfilePage></ProfilePage>
+      </Protected>
+    ),
+  },
+  {
+    path: "*",
+    element: (
+      <>
+        <NotFoundPage></NotFoundPage>
+      </>
     ),
   },
 ]);

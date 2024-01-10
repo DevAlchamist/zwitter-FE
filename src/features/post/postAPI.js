@@ -15,7 +15,6 @@ export function createPost(postData) {
       })
   );
 }
-
 export function fetchAllPost() {
   return new Promise((resolve, reject) =>
     axios
@@ -47,7 +46,37 @@ export function fetchPostById(id) {
   return new Promise((resolve, reject) =>
     axios.get("http://localhost:8080/api/post/" + id).then((response) => {
       const responseData = response;
-      console.log("responseData", responseData);
+      resolve(responseData);
+    })
+  );
+}
+export function fetchCommentByPostId(id) {
+  return new Promise((resolve, reject) =>
+    axios.get("http://localhost:8080/api/comment/" + id).then((response) => {
+      const responseData = response;
+      resolve(responseData);
+    })
+  );
+}
+export function createComment(commentInfo) {
+  return new Promise((resolve, reject) =>
+    axios
+      .post("http://localhost:8080/api/comment", commentInfo, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        const responseData = response;
+        resolve(responseData);
+      })
+  );
+}
+export function fetchUserAllPosts(id) {
+  return new Promise((resolve, reject) =>
+    axios.get("http://localhost:8080/api/post/user/" + id).then((response) => {
+      const responseData = response;
       resolve(responseData);
     })
   );

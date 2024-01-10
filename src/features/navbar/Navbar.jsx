@@ -6,6 +6,7 @@ import { GoHome } from "react-icons/go";
 import { Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUserAsync, selectLoggedInUser } from "../auth/authSlice";
+import Users from "../user/Users";
 
 const Navbar = ({ children }) => {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const Navbar = ({ children }) => {
   return (
     <>
       <div className="flex ">
-        <div className="relative flex flex-col justify-between border-r-4 border-gray-500 bg-clip-border bg-white text-gray-700 h-[calc(100vh)] w-full max-w-[20rem] p-4 dark:shadow-black/40 shadow-xl shadow-blue-gray-900/5">
+        <div className="relative flex flex-col justify-between border-r-2 border-gray-500 bg-clip-border bg-white text-gray-700 h-[calc(100vh)] w-full max-w-[20rem] p-4 dark:shadow-black/40 shadow-xl shadow-blue-gray-900/5">
           <div className="border-b-2 border-gray-300 mb-2 p-4">
             <h5 className="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">
               <img src={logo} alt="" className="-my-7" />
@@ -135,7 +136,7 @@ const Navbar = ({ children }) => {
               Messages{" "}
             </Link>
             <Link
-              to="/profile"
+              to={`/profile/${user.id}`}
               role="button"
               tabIndex={0}
               className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none"
@@ -189,14 +190,16 @@ const Navbar = ({ children }) => {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-between w-full h-auto">
-                <div className="w-[40%]">
-                  <div className="font-bold text-lg">Name</div>
-                  <div className="text-xs text-gray-500">
-                    <span className="mr-2">unique@user_name</span>
+              {user && (
+                <div className="flex justify-between w-full h-auto">
+                  <div className="w-[40%]">
+                    <div className="font-bold text-lg">{user.name}</div>
+                    <div className="text-xs text-gray-500">
+                      <span className="mr-2">@{user.username}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </nav>
           <Link
@@ -229,8 +232,11 @@ const Navbar = ({ children }) => {
           </Link>
         </div>
         {/* Post Main */}
-        <div className=" flex-row flex border-r-4 border-gray-500 dark:shadow-black/40 shadow-xl">
+        <div className="w-full flex-row flex border-r-2 border-gray-500 dark:shadow-black/40 shadow-xl">
           {children}
+        </div>
+        <div>
+          <Users />
         </div>
       </div>
     </>

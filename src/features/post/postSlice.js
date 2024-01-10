@@ -1,11 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createPost, fetchAllPost, fetchPostById, updatePost } from "./postAPI";
+import {
+  createComment,
+  createPost,
+  fetchAllPost,
+  fetchCommentByPostId,
+  fetchPostById,
+  fetchUserAllPosts,
+  updatePost,
+} from "./postAPI";
 
 const initialState = {
   value: 0,
   status: "idle",
   posts: [],
   postDetails: null,
+  postComments: null,
+  userPosts: [],
 };
 
 export const createPostAsync = createAsyncThunk(
@@ -33,6 +43,27 @@ export const fetchPostByIdAsync = createAsyncThunk(
   "post/fetchPostById",
   async (id) => {
     const response = await fetchPostById(id);
+    return response.data;
+  }
+);
+export const fetchCommentByPostIdAsync = createAsyncThunk(
+  "post/fetchCommentByPostId",
+  async (id) => {
+    const response = await fetchCommentByPostId(id);
+    return response.data;
+  }
+);
+export const createCommentAsync = createAsyncThunk(
+  "post/createComment",
+  async (commentInfo) => {
+    const response = await createComment(commentInfo);
+    return response.data;
+  }
+);
+export const fetchUserAllPostsAsync = createAsyncThunk(
+  "post/fetchUserAllPosts",
+  async (id) => {
+    const response = await fetchUserAllPosts(id);
     return response.data;
   }
 );
@@ -66,13 +97,25 @@ export const postSlice = createSlice({
         const postIndex = state.posts.findIndex(
           (post) => post._id === updatedPost._id
         );
+
+        const userPostIndex = state.userPosts.findIndex(
+          (post) => post._id === updatedPost._id
+        );
+
         if (postIndex !== -1) {
           state.posts[postIndex] = updatedPost;
         }
-        const { updateDetailPost } = action.meta.arg; // Accessing updateDetailPost from action.meta.arg
-  
+        if (userPostIndex !== -1) {
+          state.userPosts[userPostIndex] = updatedPost;
+        }
+        const { updateDetailPost, profileUserPosts } = action.meta.arg; // Accessing updateDetailPost from action.meta.arg
+
         if (updateDetailPost && state.postDetails?._id === updatedPost._id) {
           state.postDetails = updatedPost;
+        }
+
+        if (profileUserPosts && state.userPosts?._id === updatedPost._id) {
+          state.userPosts = updatedPost;
         }
       })
       .addCase(fetchPostByIdAsync.pending, (state) => {
@@ -81,11 +124,35 @@ export const postSlice = createSlice({
       .addCase(fetchPostByIdAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.postDetails = action.payload;
+      })
+      .addCase(fetchCommentByPostIdAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchCommentByPostIdAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.postComments = action.payload;
+      })
+      .addCase(createCommentAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(createCommentAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.postComments.push(action.payload);
+        state.postDetails.comments.push(action.payload._id);
+      })
+      .addCase(fetchUserAllPostsAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchUserAllPostsAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.userPosts = action.payload;
       });
   },
 });
 
 export const selectAllPosts = (state) => state.post.posts;
 export const selectPostDetails = (state) => state.post.postDetails;
+export const selectPostComments = (state) => state.post.postComments;
+export const selectUserPosts = (state) => state.post.userPosts;
 
 export default postSlice.reducer;

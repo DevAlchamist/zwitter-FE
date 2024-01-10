@@ -10,14 +10,6 @@ const initialState = {
   userChecked: false,
 };
 
-export const fetchUserByIdAsync = createAsyncThunk(
-  "auth/fetchUserById",
-  async () => {
-    const response = await fetchUserById();
-    return response.data;
-  }
-);
-
 export const createUserAsync = createAsyncThunk(
   "auth/createUser",
   async (userData) => {

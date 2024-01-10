@@ -1,15 +1,15 @@
 import React from "react";
 import Navbar from "../features/navbar/Navbar";
-import Posts from "../features/post/components/Posts";
+import Profile from "../features/profile/Profile";
 
-const Home = () => {
+const ProfilePage = () => {
   return (
     <div>
       <Navbar>
-        <Posts/>
+        <Profile />
       </Navbar>
     </div>
   );
 };
 
-export default Home;
+export default ProfilePage;
