@@ -43,38 +43,74 @@ const Signup = () => {
                 Name
               </label>
               <input
-                {...register("name", { required: true })}
+                {...register("name", { required: "Name is Required" })}
                 type="text"
                 autoFocus=""
                 id="name"
                 className="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
                 placeholder="name"
               />
+              {errors.name && (
+                <p className="text-red-500 relative text-center">
+                  {errors.name.message}
+                </p>
+              )}
+              {/* {error && (
+                  <p className="text-red-500 text-center">
+                    {error || error.message}
+                  </p>
+                )} */}
             </div>
             <div className="my-5 text-sm">
               <label htmlFor="username" className="block text-black">
                 Username
               </label>
               <input
-                {...register("username", { required: true })}
+                {...register("username", {
+                  required: "Username is Required",
+                  pattern: {
+                    value: /^@/,
+                    message: "Username must start with @",
+                  },
+                })}
                 type="text"
                 autoFocus=""
                 id="username"
                 className="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
                 placeholder="Username"
               />
+              {errors.username && (
+                <p className="text-red-500 relative text-center">
+                  {errors.username.message}
+                </p>
+              )}
+              {/* {error && (
+                  <p className="text-red-500 text-center">
+                    {error || error.message}
+                  </p>
+                )} */}
             </div>
             <div className="my-5 text-sm">
               <label htmlFor="password" className="block text-black">
                 Password
               </label>
               <input
-                {...register("password", { required: true })}
+                {...register("password", { required: "Password is Required" })}
                 type="password"
                 id="password"
                 className="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
                 placeholder="Password"
               />
+              {errors.password && (
+                <p className="text-red-500 relative text-center">
+                  {errors.password.message}
+                </p>
+              )}
+              {/* {error && (
+                  <p className="text-red-500 text-center">
+                    {error || error.message}
+                  </p>
+                )} */}
               <div className="flex justify-end mt-2 text-xs text-gray-600">
                 <Link to="/forgot">Forget Password?</Link>
               </div>

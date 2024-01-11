@@ -30,3 +30,24 @@ export function fetchUserById(userId) {
     }
   });
 }
+
+export function updateUser(updateUserInfo) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await axios.put(
+        "http://localhost:8080/api/user/update",
+        updateUserInfo,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      resolve(response);
+    } catch (error) {
+      console.error("Error fetching logged-in user:", error);
+      reject(error);
+    }
+  });
+}

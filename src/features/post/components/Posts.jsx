@@ -13,7 +13,12 @@ import { selectLoggedInUser } from "../../auth/authSlice";
 import { Link } from "react-router-dom";
 
 const Posts = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
 
   const dispatch = useDispatch();
 
@@ -35,8 +40,6 @@ const Posts = () => {
       setLiked(userLiked);
     }
   }, [allPosts, user]);
-
-  console.log(liked);
 
   const handleLike = (postId, user) => {
     try {
@@ -96,61 +99,16 @@ const Posts = () => {
                         >
                           <path
                             fillRule="evenodd"
-                            d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                      <button
-                        type="button"
-                        className="p-2  rounded cursor-pointer text-gray-400 hover:text-white hover:bg-blue-500"
-                      >
-                        <svg
-                          className="w-5 h-5"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                      <button
-                        type="button"
-                        className="p-2  rounded cursor-pointer text-gray-400 hover:text-white hover:bg-blue-500"
-                      >
-                        <svg
-                          className="w-5 h-5"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
                             d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
                             clipRule="evenodd"
                           />
                         </svg>
-                      </button>
-                      <button
-                        type="button"
-                        className="p-2  rounded cursor-pointer text-gray-400 hover:text-white hover:bg-blue-500"
-                      >
-                        <svg
-                          className="w-5 h-5"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
+                        <input
+                          type="file"
+                          name=""
+                          id=""
+                          className=" w-5 h-5 absolute opacity-0  top-4 flex "
+                        />
                       </button>
                       <button
                         type="button"
@@ -177,7 +135,9 @@ const Posts = () => {
                     Post
                   </label>
                   <textarea
-                    {...register("content", { required: true })}
+                    {...register("content", {
+                      required: "Content is Required",
+                    })}
                     id="content"
                     rows={3}
                     className="block px-0 w-full outline-none text-sm text-pretty text-gray-800 bg border-0"
@@ -185,6 +145,16 @@ const Posts = () => {
                     required
                     defaultValue={""}
                   />
+                  {errors.content && (
+                    <p className="text-red-500 bottom-3 relative text-center">
+                      {errors.content.message}
+                    </p>
+                  )}
+                  {/* {error && (
+                    <p className="text-red-500 text-center">
+                      {error || error.message}
+                    </p>
+                  )} */}
                 </div>
                 <button
                   type="submit"
@@ -204,13 +174,16 @@ const Posts = () => {
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((post) => (
                 <>
-                  <hr className="-border-t-gray-800 " />
-                  <ul className="list-none ">
+                  <hr key={post._id} className="-border-t-gray-800 " />
+                  <ul key={post._id} className="list-none ">
                     <li>
                       {/*second tweet*/}
                       <article className="transition duration-350 ease-in-out">
                         <div className="flex flex-shrink-0 p-4 pb-0">
-                          <a href="#" className="flex-shrink-0 group block">
+                          <Link
+                            to={`/profile/${post.user.id}`}
+                            className="flex-shrink-0 group block"
+                          >
                             <div className="flex items-center">
                               <div>
                                 <img
@@ -228,7 +201,7 @@ const Posts = () => {
                                 </p>
                               </div>
                             </div>
-                          </a>
+                          </Link>
                         </div>
                         <div className="pl-16">
                           <p className="text-base width-auto font-medium  flex-shrink">
@@ -257,7 +230,7 @@ const Posts = () => {
                             <div className="flex-1 flex items-center  text-xs  hover:text-red-600 transition duration-350 ease-in-out">
                               {/* like */}
 
-                              {liked[post._id]? (
+                              {liked[post._id] ? (
                                 <svg
                                   onClick={() => handleLike(post._id, user)}
                                   className="w-5  h-5 mr-2"
@@ -303,7 +276,7 @@ const Posts = () => {
 
                               {post.likedIds.length}
                             </div>
-                            <div className="flex-1 flex items-center text-xs hover:text-blue-400 transition duration-350 ease-in-out">
+                            <Link to={`/posts/${post._id}`}  className="flex-1 flex items-center text-xs hover:text-blue-400 transition duration-350 ease-in-out">
                               {/* comments */}
                               <svg
                                 viewBox="0 0 24 24"
@@ -315,7 +288,7 @@ const Posts = () => {
                                 </g>
                               </svg>
                               {post.comments.length}
-                            </div>
+                            </Link>
                             <div className="flex-1 flex items-center  text-xs  hover:text-green-400 transition duration-350 ease-in-out">
                               {/* retweet */}
                               <svg
@@ -327,7 +300,7 @@ const Posts = () => {
                                   <path d="M23.77 15.67c-.292-.293-.767-.293-1.06 0l-2.22 2.22V7.65c0-2.068-1.683-3.75-3.75-3.75h-5.85c-.414 0-.75.336-.75.75s.336.75.75.75h5.85c1.24 0 2.25 1.01 2.25 2.25v10.24l-2.22-2.22c-.293-.293-.768-.293-1.06 0s-.294.768 0 1.06l3.5 3.5c.145.147.337.22.53.22s.383-.072.53-.22l3.5-3.5c.294-.292.294-.767 0-1.06zm-10.66 3.28H7.26c-1.24 0-2.25-1.01-2.25-2.25V6.46l2.22 2.22c.148.147.34.22.532.22s.384-.073.53-.22c.293-.293.293-.768 0-1.06l-3.5-3.5c-.293-.294-.768-.294-1.06 0l-3.5 3.5c-.294.292-.294.767 0 1.06s.767.293 1.06 0l2.22-2.22V16.7c0 2.068 1.683 3.75 3.75 3.75h5.85c.414 0 .75-.336.75-.75s-.337-.75-.75-.75z" />
                                 </g>
                               </svg>
-                              14 k
+                              14
                             </div>
 
                             <div className="flex-1 flex items-center  text-xs  hover:text-blue-400 transition duration-350 ease-in-out">

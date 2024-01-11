@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchAllUser, fetchUserById } from "./userAPI";
+import { fetchAllUser, fetchUserById, updateUser } from "./userAPI";
 
 const initialState = {
   value: 0,
@@ -33,6 +33,18 @@ export const fetchUserByIdAsync = createAsyncThunk(
     }
   }
 );
+export const updateUserAsync = createAsyncThunk(
+  "profile/updateUser",
+  async (updateUserInfo, { rejectWithValue }) => {
+    try {
+      const response = await updateUser(updateUserInfo);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error);
+    }
+  }
+);
 
 export const userSlice = createSlice({
   name: "user",
@@ -53,6 +65,13 @@ export const userSlice = createSlice({
       .addCase(fetchUserByIdAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.userDetail = action.payload;
+      })
+      .addCase(updateUserAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updateUserAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.userDetail = action.payload;
       });
   },
 });
@@ -61,5 +80,8 @@ export const selectCount = (state) => state.user.value;
 
 export const selectAllUsers = (state) => state.user.users;
 export const selectUserDetails = (state) => state.user.userDetail;
+
+export const selectUserProfileStatus = (state) => state.user.status;
+
 
 export default userSlice.reducer;

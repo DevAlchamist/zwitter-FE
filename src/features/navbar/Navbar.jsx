@@ -1,9 +1,7 @@
 import React from "react";
 import logo from "../../images/zwitter-horizontal.png";
 
-import { FaPersonRifle, FaXTwitter } from "react-icons/fa6";
-import { GoHome } from "react-icons/go";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUserAsync, selectLoggedInUser } from "../auth/authSlice";
 import Users from "../user/Users";
@@ -15,23 +13,13 @@ const Navbar = ({ children }) => {
   return (
     <>
       <div className="flex ">
-        <div className="relative flex flex-col justify-between border-r-2 border-gray-500 bg-clip-border bg-white text-gray-700 h-[calc(100vh)] w-full max-w-[20rem] p-4 dark:shadow-black/40 shadow-xl shadow-blue-gray-900/5">
+        <div className=" h-screen relative flex flex-col justify-between border-r-2 border-gray-500 bg-clip-border bg-white text-gray-700 w-full max-w-[20rem] p-4 dark:shadow-black/40 shadow-xl shadow-blue-gray-900/5">
           <div className="border-b-2 border-gray-300 mb-2 p-4">
             <h5 className="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">
               <img src={logo} alt="" className="-my-7" />
             </h5>
           </div>
           <nav className="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
-            <div
-              role="button"
-              tabIndex={0}
-              className="flex items-center w-full py-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none"
-            >
-              <div className="grid place-items-center mr-4">
-                {/* Home Img */}
-              </div>
-              Greetings!
-            </div>
             <Link
               to="/"
               role="button"
@@ -195,7 +183,7 @@ const Navbar = ({ children }) => {
                   <div className="w-[40%]">
                     <div className="font-bold text-lg">{user.name}</div>
                     <div className="text-xs text-gray-500">
-                      <span className="mr-2">@{user.username}</span>
+                      <span className="mr-2">{user.username}</span>
                     </div>
                   </div>
                 </div>
@@ -232,7 +220,7 @@ const Navbar = ({ children }) => {
           </Link>
         </div>
         {/* Post Main */}
-        <div className="w-full flex-row flex border-r-2 border-gray-500 dark:shadow-black/40 shadow-xl">
+        <div className="w-full px-3 flex-row flex border-r-2 border-gray-500 dark:shadow-black/40 shadow-xl">
           {children}
         </div>
         <div>
