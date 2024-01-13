@@ -24,12 +24,14 @@ import banner from "../../images/banner.jpg";
 import pfp from "../../images/pfp-avatar.png";
 import Loader from "../loader/Loader";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const Profile = () => {
   const {
     register,
     handleSubmit,
     watch,
+    getValues,
     formState: { errors },
   } = useForm();
   const params = useParams();
@@ -145,6 +147,16 @@ const Profile = () => {
     },
   };
 
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+    // formData.append("profileImage", data.profileImage[0]); // Assuming only one file is selected
+    formData.append("cover", data.cover[0]); // Assuming only one file is selected
+    formData.append("userId", userDetail.id);
+
+    dispatch(updateUserAsync(formData));
+
+    closeModal();
+  };
   return (
     <>
       {profileStatus === "loading" ? (
@@ -168,22 +180,8 @@ const Profile = () => {
                   <form
                     className="py-2 px-9"
                     action="submit"
-                    onSubmit={handleSubmit((data) => {
-                      // console.log(data);
-                      const filteredObject = Object.fromEntries(
-                        Object.entries(data).filter(
-                          ([key, value]) => value.length !== 0
-                        )
-                      );
-                      const userData = { userId: userDetail.id };
-                      const updateUserInfo = {
-                        ...userData,
-                        ...filteredObject,
-                      };
-                      // console.log({...userData,...filteredObject})
-                      dispatch(updateUserAsync(updateUserInfo));
-                      closeModal();
-                    })}
+                    encType="multipart/form-data"
+                    onSubmit={handleSubmit(onSubmit)}
                   >
                     {/* PFP */}
                     <div className="mb-6">
@@ -351,14 +349,22 @@ const Profile = () => {
                               onClick={openModal}
                               style={{ height: "9rem", width: "9rem" }}
                               className="md rounded-full relative border-4 border-gray-900"
-                              src={pfp}
-                              alt=""
+                              src={
+                                userDetail.profileImage?.url
+                                  ? userDetail.profileImage?.url
+                                  : pfp
+                              }
+                              alt="profile"
                             />
                           ) : (
                             <img
                               style={{ height: "9rem", width: "9rem" }}
                               className="md rounded-full relative border-4 border-gray-900"
-                              src={pfp}
+                              src={
+                                userDetail.profileImage?.url
+                                  ? userDetail.profileImage?.url
+                                  : pfp
+                              }
                               alt=""
                             />
                           )}

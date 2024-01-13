@@ -19,7 +19,7 @@ const Navbar = ({ children }) => {
               <img src={logo} alt="" className="-my-7" />
             </h5>
           </div>
-          <nav className="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
+          <nav className="flex h-[32rem] flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
             <Link
               to="/"
               role="button"
@@ -193,7 +193,7 @@ const Navbar = ({ children }) => {
           <Link
             to="/login"
             onClick={() => dispatch(logoutUserAsync())}
-            className="flex flex-col justify-end h-[25vh]"
+            className="flex flex-col justify-end"
           >
             <div
               role="button"

@@ -39,9 +39,6 @@ export function updateUser(updateUserInfo) {
         updateUserInfo,
         {
           withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
         }
       );
       resolve(response);
