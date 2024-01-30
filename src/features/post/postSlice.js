@@ -89,9 +89,10 @@ export const postSlice = createSlice({
         state.posts = action.payload;
       })
       .addCase(updatePostAsync.pending, (state) => {
-        state.status = "loading";
+        state.status = "idle";
       })
       .addCase(updatePostAsync.fulfilled, (state, action) => {
+        state.status = "idle";
         const updatedPost = action.payload;
 
         const postIndex = state.posts.findIndex(
@@ -154,5 +155,6 @@ export const selectAllPosts = (state) => state.post.posts;
 export const selectPostDetails = (state) => state.post.postDetails;
 export const selectPostComments = (state) => state.post.postComments;
 export const selectUserPosts = (state) => state.post.userPosts;
+export const selectPostStatus = (state) => state.post.status;
 
 export default postSlice.reducer;

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUserAsync, selectLoggedInUser } from "../auth/authSlice";
 import Users from "../user/Users";
+import pfp from "../../images/pfp-avatar.png";
 
 const Navbar = ({ children }) => {
   const dispatch = useDispatch();
@@ -175,18 +176,28 @@ const Navbar = ({ children }) => {
                   <div className="border-2 border-gray-400 w-full rounded-full h-full">
                     {" "}
                     {/* PFP */}
+                    <img
+                      className=" rounded-full h-full w-full"
+                      src={
+                        user?.profileImage?.url ? user?.profileImage?.url : pfp
+                      }
+                      alt="profile"
+                    />
                   </div>
                 </div>
               </div>
               {user && (
-                <div className="flex justify-between w-full h-auto">
+                <Link
+                  to={"/profile/${user.id}"}
+                  className="flex justify-between w-full h-auto"
+                >
                   <div className="w-[40%]">
                     <div className="font-bold text-lg">{user.name}</div>
                     <div className="text-xs text-gray-500">
                       <span className="mr-2">{user.username}</span>
                     </div>
                   </div>
-                </div>
+                </Link>
               )}
             </div>
           </nav>

@@ -7,6 +7,7 @@ import {
 } from "./userSlice";
 import { Link } from "react-router-dom";
 import { selectLoggedInUser } from "../auth/authSlice";
+import pfp from "../../images/pfp-avatar.png";
 
 const Users = () => {
   const dispatch = useDispatch();
@@ -56,6 +57,15 @@ const Users = () => {
                         <div className="h-9 w-9 rounded-sm flex items-center justify-center text-3xl">
                           <div className="border-2 border-gray-400 w-full rounded-full h-full">
                             {" "}
+                            <img
+                              className=" h-full rounded-full w-full"
+                              src={
+                                user?.profileImage?.url
+                                  ? user?.profileImage?.url
+                                  : pfp
+                              }
+                              alt="profile"
+                            />
                           </div>
                         </div>
                       </div>

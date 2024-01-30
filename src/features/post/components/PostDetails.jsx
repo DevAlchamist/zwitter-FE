@@ -14,6 +14,8 @@ import { selectLoggedInUser } from "../../auth/authSlice";
 import { Link, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
+import pfp from "../../../images/pfp-avatar.png";
+
 const PostDetails = () => {
   const {
     register,
@@ -24,8 +26,8 @@ const PostDetails = () => {
 
   const dispatch = useDispatch();
   const postDetails = useSelector(selectPostDetails);
+  console.log(postDetails);
   const postComments = useSelector(selectPostComments);
-  // console.log(postComments);
   const user = useSelector(selectLoggedInUser);
   const params = useParams();
 
@@ -79,7 +81,7 @@ const PostDetails = () => {
       <div>
         {postDetails && (
           <ul key={postDetails._id} className="list-none">
-            <li >
+            <li>
               {/*second tweet*/}
               <article className="transition duration-350 ease-in-out">
                 <div className="flex flex-shrink-0 p-4 pb-0">
@@ -91,8 +93,12 @@ const PostDetails = () => {
                       <div>
                         <img
                           className="inline-block h-10 w-10 rounded-full"
-                          src="https://pbs.twimg.com/profile_images/1121328878142853120/e-rpjoJi_bigger.png"
-                          alt=""
+                          src={
+                            postDetails?.user?.profileImage?.url
+                              ? postDetails?.user?.profileImage?.url
+                              : pfp
+                          }
+                          alt="postImg"
                         />
                       </div>
                       <Link
@@ -116,22 +122,22 @@ const PostDetails = () => {
                   <p className="text-base width-auto font-medium  flex-shrink">
                     {postDetails.content}
                   </p>
-                  <div className="md:flex-shrink pr-6 pt-3">
-                    <div
-                      className="bg-cover bg-no-repeat bg-center rounded-lg w-full h-64"
-                      style={{
-                        height: 200,
-                        backgroundImage:
-                          "url(https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=448&q=80)",
-                      }}
-                    >
-                      <img
-                        className="opacity-0 w-full h-full"
-                        src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=448&q=80"
-                        alt=""
-                      />
+                  {postDetails?.postImage?.url && (
+                    <div className="md:flex-shrink pr-6 pt-3">
+                      <div
+                        className="bg-cover bg-no-repeat bg-center rounded-lg w-full h-64"
+                        style={{
+                          height: 200,
+                          backgroundImage: `url(${postDetails?.postImage?.url})`,
+                        }}
+                      >
+                        <img
+                          className="opacity-0 w-full h-full"
+                          alt="postImage"
+                        />
+                      </div>
                     </div>
-                  </div>
+                  )}
                   <div className="flex items-center py-4">
                     <div className="flex-1 flex items-center  text-xs  hover:text-red-600 transition duration-350 ease-in-out">
                       {/* like */}
@@ -251,7 +257,7 @@ const PostDetails = () => {
                       required=""
                       defaultValue={""}
                     />
-                    
+
                     {/* {error && (
                   <p className="text-red-500 text-center">
                     {error || error.message}
@@ -266,10 +272,10 @@ const PostDetails = () => {
                     </div>
                   </div>
                   {errors.body && (
-                      <p className="text-red-500 left-6 mt-3 bottom-3 relative text-center">
-                        {errors.body.message}
-                      </p>
-                    )}
+                    <p className="text-red-500 left-6 mt-3 bottom-3 relative text-center">
+                      {errors.body.message}
+                    </p>
+                  )}
                 </div>
               </form>
             </div>
@@ -283,8 +289,12 @@ const PostDetails = () => {
                 <div className="flex items-center px-6 mt-4">
                   <div className="flex flex-shrink-0 self-start cursor-pointer">
                     <img
-                      src="https://images.unsplash.com/photo-1609349744982-0de6526d978b?ixid=MXwxMjA3fDB8MHx0b3BpYy1mZWVkfDU5fHRvd0paRnNrcEdnfHxlbnwwfHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                      alt=""
+                      src={
+                        comment.userId?.profileImage?.url
+                          ? comment.userId?.profileImage?.url
+                          : pfp
+                      }
+                      alt="profilePic"
                       className="h-8 w-8 object-cover rounded-full"
                     />
                   </div>
