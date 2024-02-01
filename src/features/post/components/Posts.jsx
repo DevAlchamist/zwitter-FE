@@ -15,11 +15,42 @@ import pfp from "../../../images/pfp-avatar.png";
 import { Link } from "react-router-dom";
 import Loader from "../../loader/Loader";
 
+import Box from "@mui/joy/Box";
+import Button from "@mui/joy/Button";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import Textarea from "@mui/joy/Textarea";
+import IconButton from "@mui/joy/IconButton";
+import Menu from "@mui/joy/Menu";
+import MenuItem from "@mui/joy/MenuItem";
+import ListItemDecorator from "@mui/joy/ListItemDecorator";
+import FormatBold from "@mui/icons-material/FormatBold";
+import FormatItalic from "@mui/icons-material/FormatItalic";
+import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import Check from "@mui/icons-material/Check";
+import BallotIcon from "@mui/icons-material/Ballot";
+import CommentIcon from "@mui/icons-material/Comment";
+import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
+
+import CloseIcon from "@mui/icons-material/Close";
+
+import DoneIcon from "@mui/icons-material/Done";
+import ImageIcon from "@mui/icons-material/Image";
+import {
+  Avatar,
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+} from "@mui/material";
+import { AspectRatio, CardOverflow, Divider } from "@mui/joy";
+
 const Posts = () => {
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -68,6 +99,52 @@ const Posts = () => {
     }
   };
 
+  const handleUpload = (e, uploadId) => {
+    const element = document.getElementById(uploadId);
+    element.click();
+  };
+
+  const [file, setFile] = useState(null);
+
+  const renderFilePreview = () => {
+    if (!file) return null;
+
+    const maxSizeInBytes = 5 * 1024 * 1024; // 50MB
+
+    if (file.size > maxSizeInBytes) {
+      return <p>File is too big. Maximum allowed size is 50MB.</p>;
+    }
+
+    if (file.type.startsWith("image/")) {
+      // For image files, display the image preview
+      return (
+        <>
+          <img
+            className="object-cover h-5 w-5 "
+            src={URL.createObjectURL(file)}
+            alt={file.name}
+          />
+          <CloseIcon
+            onClick={() => {
+              setFile(null);
+            }}
+            className="absolute text-red-600 h-3 w-3 inset-y-0 inset-x-4"
+          />
+        </>
+      );
+    } else {
+      // For non-image files, use FileReader to display a preview
+      const reader = new FileReader();
+      reader.readAsText(file);
+
+      reader.onload = (e) => {
+        return <p>{e.target.result}</p>; // You can customize this as needed
+      };
+
+      return <p>An error occurred</p>;
+    }
+  };
+
   useEffect(() => {
     dispatch(fetchAllPostAsync());
   }, [dispatch]);
@@ -77,7 +154,7 @@ const Posts = () => {
       {postStatus === "loading" ? (
         <Loader />
       ) : (
-        <div className=" w-full overflow-y-auto h-screen scroll no-scrollbar">
+        <div className=" h-full no-scrollbar w-full overflow-y-auto  ">
           <div>
             {/* Create Post */}
             <div>
@@ -90,9 +167,107 @@ const Posts = () => {
                     formData.append("content", data.content);
                     formData.append("postImage", data.postImage[0]);
                     dispatch(createPostAsync(formData));
+
+                    reset();
                   })}
                 >
-                  <div className="mb-4 w-full px-5 pb">
+                  <Box>
+                    <FormControl>
+                      <FormLabel className="flex gap-1">
+                        <Avatar
+                          className=" rounded-full bg-[#F7F9FB]"
+                          src={user.profileImage.url}
+                          alt=""
+                        />
+                        Your comment
+                      </FormLabel>
+                      <Textarea
+                        {...register("content", {
+                          required: "Content is Required",
+                        })}
+                        required
+                        placeholder="Type something here…"
+                        minRows={3}
+                        endDecorator={
+                          <Box
+                            sx={{
+                              display: "flex",
+                              gap: "var(--Textarea-paddingBlock)",
+                              pt: "var(--Textarea-paddingBlock)",
+                              borderTop: "1px solid",
+                              borderColor: "divider",
+                              flex: "auto",
+                            }}
+                          >
+                            <IconButton variant="plain" color="neutral">
+                              <ImageIcon
+                                onClick={(e) => {
+                                  handleUpload(e, "postImage");
+                                }}
+                              />
+                              <input
+                                {...register("postImage")}
+                                hidden
+                                type="file"
+                                name="postImage"
+                                id="postImage"
+                                onChange={(event) => {
+                                  const file = event.target.files[0];
+                                  setFile(file);
+                                }}
+                              />
+                            </IconButton>
+                            <IconButton className=" cursor-default hover:bg-transparent">
+                              {renderFilePreview()}
+                            </IconButton>
+                            {/* <Menu
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={() => setAnchorEl(null)}
+                                size="sm"
+                                placement="bottom-start"
+                                sx={{ "--ListItemDecorator-size": "24px" }}
+                              >
+                                {["200", "normal", "bold"].map((weight) => (
+                                  <MenuItem
+                                    key={weight}
+                                    selected={fontWeight === weight}
+                                    onClick={() => {
+                                      setFontWeight(weight);
+                                      setAnchorEl(null);
+                                    }}
+                                    sx={{ fontWeight: weight }}
+                                  >
+                                    <ListItemDecorator>
+                                      {fontWeight === weight && (
+                                        <Check fontSize="sm" />
+                                      )}
+                                    </ListItemDecorator>
+                                    {weight === "200" ? "lighter" : weight}
+                                  </MenuItem>
+                                ))}
+                              </Menu> */}
+                            {/* <IconButton
+                                variant={italic ? "soft" : "plain"}
+                                color={italic ? "primary" : "neutral"}
+                                aria-pressed={italic}
+                                onClick={() => setItalic((bool) => !bool)}
+                              >
+                                <FormatItalic />
+                              </IconButton> */}
+                            <Button type="submit" sx={{ ml: "auto" }}>
+                              Post
+                            </Button>
+                          </Box>
+                        }
+                        sx={{
+                          minWidth: 300,
+                        }}
+                      />
+                    </FormControl>
+                  </Box>
+
+                  {/* <div className="mb-4 w-full px-5 pb">
                     <div className="flex justify-between items-center py-2 px-3 border-b dark:border-gray-600">
                       <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
                         <div className="flex items-center space-x-1 sm:pr-4">
@@ -160,11 +335,6 @@ const Posts = () => {
                           {errors.content.message}
                         </p>
                       )}
-                      {/* {error && (
-                      <p className="text-red-500 text-center">
-                        {error || error.message}
-                      </p>
-                    )} */}
                     </div>
                     <button
                       type="submit"
@@ -172,7 +342,7 @@ const Posts = () => {
                     >
                       Post
                     </button>
-                  </div>
+                  </div> */}
                 </form>
               </div>
             </div>
@@ -184,10 +354,91 @@ const Posts = () => {
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                   .map((post) => (
                     <>
-                      <hr key={post._id} className="-border-t-gray-800 " />
+                      <Box className=" no-scrollbar font-jakarta-sans border-t-2 border-[#F0F0F0] bg-white">
+                        <Card elevation={0}>
+                          <CardHeader
+                            avatar={
+                              <img
+                                className="h-9 w-9 bg-[#F7F9FB] object-cover rounded-full"
+                                src={
+                                  post.user?.profileImage?.url
+                                    ? post.user?.profileImage?.url
+                                    : pfp
+                                }
+                                alt={post.user.name}
+                              />
+                            }
+                            title={
+                              <span className=" font-jakarta-sans font-semibold  text-[#616161]">
+                                {post.user.name}
+                              </span>
+                            }
+                            subheader={
+                              <span className=" font-jakarta-sans font-normal text-[#BDBDBD]">
+                                {post.user.username}
+                              </span>
+                            }
+                          />
+
+                          <CardContent className="flex flex-col gap-5 py-6">
+                            <Typography>{post.content}</Typography>
+                            {post.postImage?.url && (
+                              <>
+                                {/* <CardOverflow> */}
+                                <AspectRatio
+                                  className="px-12   rounded-xl"
+                                  variant="outlined"
+                                  objectFit="cover"
+                                >
+                                  <img
+                                    className="   h-full"
+                                    src={post.postImage.url}
+                                    alt=""
+                                  />
+                                </AspectRatio>
+                                {/* </CardOverflow> */}
+                              </>
+                            )}
+                          </CardContent>
+                        </Card>
+                        <CardOverflow
+                          variant="soft"
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            gap: 1,
+                            justifyContent: "space-around",
+                            py: 1,
+                            borderTop: "1px solid",
+                            borderColor: "divider",
+                          }}
+                        >
+                          <Typography
+                            startDecorator={<BallotIcon color="danger" />}
+                            level="title-sm"
+                          >
+                            13
+                          </Typography>
+                          <Divider orientation="vertical" />
+                          <Typography
+                            startDecorator={<CommentIcon />}
+                            level="title-sm"
+                          >
+                            9
+                          </Typography>
+                          <Divider orientation="vertical" />
+                          <Typography
+                            startDecorator={<InboxOutlinedIcon />}
+                            level="title-sm"
+                          >
+                            32
+                          </Typography>
+                        </CardOverflow>
+                      </Box>
+
+                      {/* <hr key={post._id} className="-border-t-gray-800 " />
                       <ul key={post._id} className="list-none ">
                         <li>
-                          {/*second tweet*/}
                           <article className="transition duration-350 ease-in-out">
                             <div className="flex flex-shrink-0 p-4 pb-0">
                               <Link
@@ -243,7 +494,6 @@ const Posts = () => {
                               </Link>
                               <div className="flex items-center py-4">
                                 <div className="flex-1 flex items-center  text-xs  hover:text-red-600 transition duration-350 ease-in-out">
-                                  {/* like */}
 
                                   {liked[post._id] ? (
                                     <svg
@@ -295,7 +545,6 @@ const Posts = () => {
                                   to={`/posts/${post._id}`}
                                   className="flex-1 flex items-center text-xs hover:text-blue-400 transition duration-350 ease-in-out"
                                 >
-                                  {/* comments */}
                                   <svg
                                     viewBox="0 0 24 24"
                                     fill="currentColor"
@@ -308,7 +557,6 @@ const Posts = () => {
                                   {post.comments.length}
                                 </Link>
                                 <div className="flex-1 flex items-center  text-xs  hover:text-green-400 transition duration-350 ease-in-out">
-                                  {/* retweet */}
                                   <svg
                                     viewBox="0 0 24 24"
                                     fill="currentColor"
@@ -322,7 +570,6 @@ const Posts = () => {
                                 </div>
 
                                 <div className="flex-1 flex items-center  text-xs  hover:text-blue-400 transition duration-350 ease-in-out">
-                                  {/* share */}
                                   <svg
                                     viewBox="0 0 24 24"
                                     fill="currentColor"
@@ -339,13 +586,10 @@ const Posts = () => {
                             <hr className="border-gray-800" />
                           </article>
                         </li>
-                      </ul>
+                      </ul> */}
                     </>
                   ))
               : null}
-            <div className="flex border-t-2 border-gray-400 justify-center  min-h-auto">
-              {" "}
-            </div>
           </div>
         </div>
       )}

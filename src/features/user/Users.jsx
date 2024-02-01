@@ -8,6 +8,8 @@ import {
 import { Link } from "react-router-dom";
 import { selectLoggedInUser } from "../auth/authSlice";
 import pfp from "../../images/pfp-avatar.png";
+import { Box, Card, CardHeader, Input } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 const Users = () => {
   const dispatch = useDispatch();
@@ -25,62 +27,55 @@ const Users = () => {
   return (
     <div>
       <>
-        {/* component */}
-        {/* This is an example component */}
-        <div className="">
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <div className="p-4">
-              <label htmlFor="table-search" className="sr-only">
-                Search
-              </label>
-              <div className="relative mt-1">
-                <input
-                  onChange={(e) => setUsername(e.target.value)}
-                  type="text"
-                  id="table-search"
-                  className=" text-sm border-b-2 pb-2 outline-none border-gray-600 block w-80 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 text-black"
-                  placeholder="Search..."
-                />
-              </div>
-            </div>
+        <div className=" h-screen font-jakarta-sans w-full border-l-2 border-[#F0F0F0] py-3 px-5 ">
+          <Box className="flex flex-row  rounded-lg border-2 border-[#F0F0F0] border-solid   ">
+            <Input
+              disableUnderline={true}
+              onChange={(e) => setUsername(e.target.value)}
+              className=" px-4 border-none outline-none"
+              placeholder="Search for documents"
+              inputProps={{ "aria-label": "search" }}
+            />
+            <SearchIcon className=" text-[#A3A3A3] text-2xl py-2 h-full  pointer-events-none  flex items-center justify-center" />
+          </Box>
+          <div className="flex flex-col gap-3 py-6">
+            {allUsers &&
+              allUsers.map(
+                (user) =>
+                  user.id !== loggedUser.id && (
+                    <>
+                      <Link key={user.id} className=" w-full flex" to={`/profile/${user.id}`}>
+                        <Card className="w-full bg-[#F7F9FB]  rounded-lg" elevation={0}>
+                          <CardHeader
+                            className=" "
+                            avatar={
+                              <img
+                                className="h-9 w-9 object-cover rounded-full"
+                                src={
+                                  user?.profileImage?.url
+                                    ? user?.profileImage?.url
+                                    : pfp
+                                }
+                                alt={user.name}
+                              />
+                            }
+                            title={
+                              <span className=" font-jakarta-sans font-semibold  text-[#616161]">
+                                {user.name}
+                              </span>
+                            }
+                            subheader={
+                              <span className=" font-jakarta-sans font-normal text-[#BDBDBD]">
+                                {user.username}
+                              </span>
+                            }
+                          />
+                        </Card>
+                      </Link>
+                    </>
+                  )
+              )}
           </div>
-          {allUsers &&
-            allUsers.map(
-              (user) =>
-                user.id !== loggedUser.id && (
-                  <div
-                    key={user.id}
-                    className="w-full flex flex-row p-3 pl-4 items-center hover:bg-gray-300 rounded-lg cursor-pointer"
-                  >
-                    <Link className=" w-full flex" to={`/profile/${user.id}`}>
-                      <div className="mr-4">
-                        <div className="h-9 w-9 rounded-sm flex items-center justify-center text-3xl">
-                          <div className="border-2 border-gray-400 w-full rounded-full h-full">
-                            {" "}
-                            <img
-                              className=" h-full rounded-full w-full"
-                              src={
-                                user?.profileImage?.url
-                                  ? user?.profileImage?.url
-                                  : pfp
-                              }
-                              alt="profile"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex justify-between w-full h-auto">
-                        <div className="w-[40%]">
-                          <div className="font-bold text-lg">{user.name}</div>
-                          <div className="text-xs text-gray-500">
-                            <span className="mr-2">{user.username}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-                )
-            )}
         </div>
       </>
     </div>
