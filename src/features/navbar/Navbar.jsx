@@ -164,19 +164,22 @@ const Navbar = () => {
             <img src={logo} alt="" className="my-4 w-48 " />
             {navs.map((nav) => {
               return (
-                <div
-                  key={nav.link}
-                  className={`  w-full text-center items-center hover:bg-[#FFE3C9] gap-2 hover:text-[#F68319] flex rounded-[8px] px-5 py-2 text-sm 2xl:text-[18px] font-normal ${
-                    location.pathname === nav.link
-                      ? "bg-[#FFE3C9] ml-5 text-[#F68319]"
-                      : "text-[#616161] mr-5 "
-                  }`}
-                >
+                <Link
+                    key={nav.link}
+                    className={`  w-full text-center items-center hover:bg-[#FFE3C9] gap-2 hover:text-[#F68319] flex rounded-[8px] px-5 py-2 text-sm 2xl:text-[18px] font-normal ${
+                      location.pathname === nav.link
+                        ? "bg-[#FFE3C9] ml-5 text-[#F68319]"
+                        : "text-[#616161] mr-5 "
+                    }`}
+                    to={nav.link}
+                    onClick={nav.onClick}
+                  >
                   {nav.icon}
-                  <Link to={nav.link} onClick={nav.onClick}>
-                    <p className="font-jakarta-sans">{nav.title}</p>
+                  
+                    <div>
+                      <p className="font-jakarta-sans">{nav.title}</p>
+                    </div>
                   </Link>
-                </div>
               );
             })}
           </div>
