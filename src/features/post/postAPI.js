@@ -92,7 +92,7 @@ export function deletePost(id) {
   console.log(id);
   return new Promise((resolve, reject) =>
     axios
-      .delete("http://localhost:8080/api/post/delete", {
+      .delete("https://zwitter-backend.vercel.app/api/post/delete", {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
