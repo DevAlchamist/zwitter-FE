@@ -13,6 +13,7 @@ import Menu from "@mui/joy/Menu";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
@@ -21,6 +22,11 @@ import {
   CardContent,
   CardHeader,
   ClickAwayListener,
+  FormControl,
+  InputAdornment,
+  OutlinedInput,
+  Slide,
+  Snackbar,
   Typography,
 } from "@mui/material";
 import { AspectRatio, CardOverflow, Divider } from "@mui/joy";
@@ -176,10 +182,21 @@ const PostCard = ({ post, updateDetailPost }) => {
 
 const PostMenu = ({ post, currentUser, onDelete, onShare }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [openModal, setOpenModal] = useState(false);
+  const [openDeleteModal, setDeleteOpenModal] = useState(false);
+  const [openShareModal, setShareOpenModal] = useState(false);
+  const [openSnackBar, setOpenSnackBar] = useState(false);
 
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
+  const handleOpenModal = () => {
+    setDeleteOpenModal(true);
+  };
+  const handleShareOpenModal = () => {
+    setShareOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setDeleteOpenModal(false);
+    setShareOpenModal(false);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -196,9 +213,11 @@ const PostMenu = ({ post, currentUser, onDelete, onShare }) => {
     handleClose();
   };
 
-  const handleShare = () => {
-    onShare(post.id);
-    handleClose();
+  const handleCopy = () => {
+    setOpenSnackBar(true);
+    navigator.clipboard.writeText(
+      `https://zwitter-plum.vercel.app/${post._id}`
+    );
   };
 
   return (
@@ -216,7 +235,7 @@ const PostMenu = ({ post, currentUser, onDelete, onShare }) => {
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
         <ClickAwayListener onClickAway={handleClose}>
           <MenuList id="split-button-menu" autoFocusItem>
-            <MenuItem onClick={handleShare}>Share</MenuItem>
+            <MenuItem onClick={handleShareOpenModal}>Share</MenuItem>
 
             {currentUser.id === post.user.id && (
               <MenuItem onClick={handleOpenModal}>Delete</MenuItem>
@@ -225,7 +244,7 @@ const PostMenu = ({ post, currentUser, onDelete, onShare }) => {
         </ClickAwayListener>
       </Menu>
 
-      <CustomModal open={openModal} handleClose={handleCloseModal}>
+      <CustomModal open={openDeleteModal} handleClose={handleCloseModal}>
         <div className="text-[18px] text-left font-semibold text-[#4C4C4C] p-10">
           Do you want to Delete this Post.
         </div>
@@ -243,6 +262,30 @@ const PostMenu = ({ post, currentUser, onDelete, onShare }) => {
             Delete
           </button>
         </div>
+      </CustomModal>
+      <CustomModal open={openShareModal} handleClose={handleCloseModal}>
+        <Snackbar
+          open={openSnackBar}
+          onClose={() => setOpenSnackBar(false)}
+          message="Copied to clipboard"
+          TransitionComponent={Slide}
+          autoHideDuration={1200}
+        />
+        <FormControl
+          className="py-8 items-start w-full px-6"
+          variant="standard"
+        >
+          <OutlinedInput
+            className="w-full"
+            disabled
+            defaultValue={`https://zwitter-plum.vercel.app/${post._id}`}
+            endAdornment={
+              <InputAdornment position="end">
+                <ContentPasteIcon onClick={handleCopy} />
+              </InputAdornment>
+            }
+          />
+        </FormControl>
       </CustomModal>
     </>
   );
