@@ -10,7 +10,7 @@ const LayoutPage = ({ children }) => {
           <Navbar />
         </div>
         <div className="flex-grow overflow-y-auto bg-white">
-          <div className="py-7">{children}</div>
+          <div className="">{children}</div>
         </div>
         <div className="hidden min-w-[25%] xl:inline">
           <Users />
