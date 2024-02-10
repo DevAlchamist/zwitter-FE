@@ -216,7 +216,7 @@ const PostMenu = ({ post, currentUser, onDelete, onShare }) => {
   const handleCopy = () => {
     setOpenSnackBar(true);
     navigator.clipboard.writeText(
-      `https://zwitter-plum.vercel.app/${post._id}`
+      `https://zwitter-plum.vercel.app/post/${post._id}`
     );
   };
 
@@ -278,7 +278,7 @@ const PostMenu = ({ post, currentUser, onDelete, onShare }) => {
           <OutlinedInput
             className="w-full"
             disabled
-            defaultValue={`https://zwitter-plum.vercel.app/${post._id}`}
+            defaultValue={`https://zwitter-plum.vercel.app/post/${post._id}`}
             endAdornment={
               <InputAdornment position="end">
                 <ContentPasteIcon onClick={handleCopy} />
