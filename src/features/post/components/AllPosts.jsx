@@ -120,6 +120,7 @@ export const AllPost = () => {
             <div>
               <div className="max-w-2xl py-3 mb-5 mx-auto">
                 <form
+                className=" px-4"
                   encType="multipart/form-data"
                   onSubmit={handleSubmit((data) => {
                     console.log(data);
@@ -146,6 +147,7 @@ export const AllPost = () => {
                         Your comment
                       </FormLabel>
                       <Textarea
+                      variant="soft"
                         {...register("content", {
                           required: "Content is Required",
                         })}

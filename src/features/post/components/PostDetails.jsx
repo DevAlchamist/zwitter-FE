@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createCommentAsync,
+  deleteCommentAsync,
   fetchCommentByPostIdAsync,
   fetchPostByIdAsync,
   selectPostComments,
@@ -12,14 +13,26 @@ import { selectLoggedInUser } from "../../auth/authSlice";
 import { Link, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
+import Box from "@mui/joy/Box";
+import Button from "@mui/joy/Button";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import Textarea from "@mui/joy/Textarea";
+import IconButton from "@mui/joy/IconButton";
+import { Avatar, ClickAwayListener, MenuItem, MenuList } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+
 import pfp from "../../../images/pfp-avatar.png";
 import PostCard from "../../common/Post";
+import { Menu } from "@mui/joy";
+import CustomModal from "../../common/modal/Modal";
 
 const PostDetails = () => {
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -28,6 +41,10 @@ const PostDetails = () => {
   const postComments = useSelector(selectPostComments);
   const user = useSelector(selectLoggedInUser);
   const params = useParams();
+
+  const handleCommentDelete = (id) => {
+    dispatch(deleteCommentAsync(id));
+  };
 
   useEffect(() => {
     dispatch(fetchPostByIdAsync(params.id));
@@ -41,10 +58,9 @@ const PostDetails = () => {
             {postDetails && (
               <PostCard post={postDetails} updateDetailPost={true} />
             )}
-            {/* comment */}
             <div
               key={postDetails._id}
-              className="flex mx-auto  border-b-2 border-[#F0F0F0] justify-center items-center "
+              className="flex justify-start  border-b-2 border-[#F0F0F0]  items-center "
             >
               <form
                 onSubmit={handleSubmit((data) => {
@@ -55,10 +71,11 @@ const PostDetails = () => {
                       userId: user.id,
                     })
                   );
+                  reset();
                 })}
-                className="w-full max-w-xl bg-white rounded-lg pl-4 pt-2"
+                className="w-full  py-3 bg-white rounded-lg px-4"
               >
-                <div className="flex flex-wrap -mx-3 mb-2">
+                {/* <div className="flex flex-wrap -mx-3 mb-2">
                   <strong>Reply to {postDetails.user.username}</strong>
                   <div className="w-auto flex justify-between md:w-full  px-3 mb-2 mt-2">
                     <textarea
@@ -70,12 +87,6 @@ const PostDetails = () => {
                       required=""
                       defaultValue={""}
                     />
-
-                    {/* {error && (
-                    <p className="text-red-500 text-center">
-                      {error || error.message}
-                    </p>
-                  )} */}
                     <div className=" ml-6 my-auto justify-center flex ">
                       <input
                         type="submit"
@@ -89,7 +100,50 @@ const PostDetails = () => {
                       {errors.body.message}
                     </p>
                   )}
-                </div>
+                </div> */}
+
+                <Box>
+                  <FormControl>
+                    <FormLabel className="flex gap-1">
+                      <Avatar
+                        className=" rounded-full bg-[#F7F9FB]"
+                        src={user.profileImage.url}
+                        alt=""
+                      />
+                      Your comment
+                    </FormLabel>
+                    <Textarea
+                      variant="soft"
+                      sx={{
+                        minWidth: 300,
+                        outline: "none",
+                        "&:focus": {
+                          outline: "none",
+                        },
+                      }}
+                      {...register("body", { required: "Type Something" })}
+                      placeholder="Type Your Comment"
+                      required
+                      minRows={2}
+                      endDecorator={
+                        <Box
+                          sx={{
+                            display: "flex",
+                            gap: "var(--Textarea-paddingBlock)",
+                            pt: "var(--Textarea-paddingBlock)",
+                            borderTop: "1px solid",
+                            borderColor: "divider",
+                            flex: "auto",
+                          }}
+                        >
+                          <Button type="submit" sx={{ ml: "auto" }}>
+                            Comment
+                          </Button>
+                        </Box>
+                      }
+                    />
+                  </FormControl>
+                </Box>
               </form>
             </div>
           </>
@@ -99,65 +153,129 @@ const PostDetails = () => {
           ? [...postComments]
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((comment) => (
-                <div className="flex items-center px-6 mt-4">
-                  <div className="flex flex-shrink-0 self-start cursor-pointer">
-                    <img
-                      src={
-                        comment.userId?.profileImage?.url
-                          ? comment.userId?.profileImage?.url
-                          : pfp
-                      }
-                      alt="profilePic"
-                      className="h-8 w-8 object-cover rounded-full"
-                    />
-                  </div>
-                  <div className="flex items-center justify-center space-x-2">
-                    <div className="block">
-                      <div className="bg-gray-100 w-auto rounded-xl px-2 pb-2">
-                        <div className="font-medium">
-                          <Link
-                            to={`/profile/${comment.userId.id}`}
-                            className="hover:underline text-sm"
-                          >
-                            <small>{comment.userId.username}</small>
-                          </Link>
-                        </div>
-                        <div className="text-xs ml-1">{comment.body}</div>
-                      </div>
-                      <div className="flex justify-start items-center text-xs w-full">
-                        <div className="font-semibold text-gray-700 px-2 flex items-center justify-center space-x-1">
-                          <small className="self-center">.</small>
-                          <a href="#" className="hover:underline">
-                            <small>{formatDate(comment.createdAt)}</small>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="self-stretch flex justify-center items-center transform transition-opacity duration-200 opacity-0 translate -translate-y-2 hover:opacity-100">
-                    <a href="#" className="">
-                      <div className="text-xs cursor-pointer flex h-6 w-6 transform transition-colors duration-200 hover:bg-gray-100 rounded-full items-center justify-center">
-                        <svg
-                          className="w-4 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-                          />
-                        </svg>
-                      </div>
-                    </a>
-                  </div>
-                </div>
+                <Comments
+                  comment={comment}
+                  currentUser={user}
+                  postDetails={postDetails}
+                  handleCommentDelete={handleCommentDelete}
+                />
               ))
           : null}
       </div>
+    </div>
+  );
+};
+
+const Comments = ({
+  comment,
+  currentUser,
+  postDetails,
+  handleCommentDelete,
+}) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [openDeleteModal, setDeleteOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setDeleteOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setDeleteOpenModal(false);
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div className="flex items-center px-6 mt-4 gap-3 font-jakarta-sans">
+      <div className="flex flex-shrink-0 self-start cursor-pointer">
+        <Avatar
+          className=" rounded-full bg-[#F7F9FB]"
+          src={
+            comment.userId?.profileImage?.url
+              ? comment.userId?.profileImage?.url
+              : pfp
+          }
+          alt="profilePic"
+        />
+      </div>
+      <div className="flex font-jakarta-sans items-center justify-center space-x-2">
+        <div className="block">
+          <div className="bg-gray-100 w-auto rounded-xl px-2 pb-2">
+            <div className="font-medium">
+              <Link
+                to={`/profile/${comment.userId.id}`}
+                className="hover:underline text-sm"
+              >
+                <small className="font-jakarta-sans">
+                  {comment.userId.username}
+                </small>
+              </Link>
+            </div>
+            <div className="text-xs ml-1 font-jakarta-sans">{comment.body}</div>
+          </div>
+          <div className="flex justify-start items-center text-xs w-full">
+            <div className="font-semibold text-gray-700 px-2 flex items-center justify-center space-x-1">
+              <small className="self-center">.</small>
+              <a href="#" className="hover:underline">
+                <small>{formatDate(comment.createdAt)}</small>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {(comment.userId.id === currentUser.id ||
+        postDetails.user?.id === currentUser.id) && (
+        <Box>
+          <IconButton
+            aria-label="post-menu"
+            variant="plain"
+            color="neutral"
+            size="xs"
+            onClick={handleClick}
+          >
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <ClickAwayListener onClickAway={handleClose}>
+              <MenuList id="split-button-menu" autoFocusItem>
+                <MenuItem onClick={handleOpenModal}>Delete</MenuItem>
+              </MenuList>
+            </ClickAwayListener>
+          </Menu>
+          <CustomModal open={openDeleteModal} handleClose={handleCloseModal}>
+            <div className="text-[18px] text-left font-semibold text-[#4C4C4C] p-10">
+              Do you want to Delete this Post.
+            </div>
+            <div className="pb-5 flex gap-3 ">
+              <button
+                onClick={handleCloseModal}
+                className="items-center h-8 bg-[#C6DCBA] px-7  rounded-[8px] text-[#F3EDC8]"
+              >
+                Back
+              </button>
+              <button
+                onClick={() => {
+                  handleCommentDelete(comment._id);
+                  setDeleteOpenModal(false);
+                }}
+                className="items-center h-8 bg-[#BF3131] px-7 rounded-[8px] text-[#F3EDC8]"
+              >
+                Delete
+              </button>
+            </div>
+          </CustomModal>
+        </Box>
+      )}
     </div>
   );
 };

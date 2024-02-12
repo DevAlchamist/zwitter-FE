@@ -105,3 +105,20 @@ export function deletePost(id) {
       })
   );
 }
+export function deleteComment(id) {
+  console.log(id);
+  return new Promise((resolve, reject) =>
+    axios
+      .delete("https://zwitter-backend.vercel.app/api/comment/delete", {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: { id: id },
+      })
+      .then((response) => {
+        const responseData = response;
+        resolve(responseData);
+      })
+  );
+}

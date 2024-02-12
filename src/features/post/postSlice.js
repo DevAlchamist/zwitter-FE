@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   createComment,
   createPost,
+  deleteComment,
   deletePost,
   fetchAllPost,
   fetchCommentByPostId,
@@ -72,6 +73,13 @@ export const deletePostAsync = createAsyncThunk(
   "post/deletePost",
   async (id) => {
     const response = await deletePost(id);
+    return response.data;
+  }
+);
+export const deleteCommentAsync = createAsyncThunk(
+  "post/deleteComment",
+  async (id) => {
+    const response = await deleteComment(id);
     return response.data;
   }
 );
@@ -163,6 +171,15 @@ export const postSlice = createSlice({
         state.status = "idle";
         state.posts = state.posts.filter(
           (post) => post._id !== action.payload.deletedPostId
+        );
+      })
+      .addCase(deleteCommentAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deleteCommentAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.postComments = state.postComments.filter(
+          (comment) => comment._id !== action.payload.deletedCommentId
         );
       });
   },
