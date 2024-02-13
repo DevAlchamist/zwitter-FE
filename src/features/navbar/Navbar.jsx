@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import logo from "../../images/zwitter-horizontal.png";
-import headerLogo from "../../images/zwitter-vertical.png";
+import headerLogo from "../../images/zwitter-horizontal.png";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUserAsync, selectLoggedInUser } from "../auth/authSlice";
@@ -13,11 +13,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
 import { Avatar, Menu, MenuItem, Tooltip } from "@mui/material";
-
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -41,26 +38,6 @@ const Navbar = () => {
             stroke-linecap="round"
             stroke-linejoin="round"
             d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
-          />
-        </svg>
-      ),
-    },
-    {
-      title: "Search",
-      link: "/search",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
           />
         </svg>
       ),
@@ -105,49 +82,10 @@ const Navbar = () => {
       ),
     },
     {
-      title: "Message",
-      link: "/message",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
-          />
-        </svg>
-      ),
-    },
-    {
-      title: "Setting",
-      link: "/setting",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden="true"
-          className="h-5 w-5"
-        >
-          <path
-            fillRule="evenodd"
-            d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 00-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 00-2.282.819l-.922 1.597a1.875 1.875 0 00.432 2.385l.84.692c.095.078.17.229.154.43a7.598 7.598 0 000 1.139c.015.2-.059.352-.153.43l-.841.692a1.875 1.875 0 00-.432 2.385l.922 1.597a1.875 1.875 0 002.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 002.28-.819l.923-1.597a1.875 1.875 0 00-.432-2.385l-.84-.692c-.095-.078-.17-.229-.154-.43a7.614 7.614 0 000-1.139c-.016-.2.059-.352.153-.43l.84-.692c.708-.582.891-1.59.433-2.385l-.922-1.597a1.875 1.875 0 00-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 00-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 00-1.85-1.567h-1.843zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
-    },
-    {
       // onClick={() => dispatch(logoutUserAsync())} function yet to be added
       title: "Logout",
-      link: "/login",
       onClick: () => dispatch(logoutUserAsync()),
+      link: "/login",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -166,23 +104,26 @@ const Navbar = () => {
     },
   ];
 
-  const location = useLocation();
-  console.log(location);
   return (
     <>
       <div>
         <SideBar navs={navs} />
       </div>
       <div>
-        <Header navs={navs} />
+        <Header navs={navs} user={user} dispatch={dispatch} />
       </div>
     </>
   );
 };
 
 const SideBar = ({ navs }) => {
+  const location = useLocation();
+  const pathname = location.pathname;
+  const pathnameSegments =
+    pathname === "/" ? [""] : pathname.split("/").filter(Boolean); 
+  console.log(pathnameSegments);
   return (
-    <div className="hidden min-w-[20%] md:inline lg:inline xl:inline">
+    <div className="hidden w-[20%] md:inline lg:inline xl:inline">
       <div className=" no-scrollbar px-4 font-jakarta-sans w-[100%] border-r-2 border-[#F0F0F0] shadow-xl  bg-white hidden md:flex md:flex-col h-screen items-center justify-center overflow-y-auto ">
         <div className=" z-50 pt-8 pb-8 h-full w-[100%] rounded-[12px] flex flex-col items-center gap-3">
           <img src={logo} alt="zwitter_logo" className="my-4 w-48 " />
@@ -191,7 +132,7 @@ const SideBar = ({ navs }) => {
               <Link
                 key={nav.link}
                 className={`  w-full text-center items-center hover:bg-[#FFE3C9] gap-2 hover:text-[#F68319] flex rounded-[8px] px-5 py-2 text-sm 2xl:text-[18px] font-normal ${
-                  location.pathname === nav.link
+                  pathnameSegments[0] === nav.link.split("/")[1]
                     ? "bg-[#FFE3C9] ml-5 text-[#F68319]"
                     : "text-[#616161] mr-5 "
                 }`}
@@ -212,66 +153,69 @@ const SideBar = ({ navs }) => {
   );
 };
 
-const Header = ({ navs }) => {
-  const [anchorElNav, setAnchorElNav] = useState(null);
+const Header = ({ user, dispatch }) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
+  const handleLogoutAndCloseMenu = () => {
+    dispatch(logoutUserAsync());
     setAnchorElUser(null);
   };
+
+  const handleCloseMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const settings = [
+    { title: "Profile", url: `/profile/${user.id}` },
+    { title: "Notification", url: `/profile/}` },
+    {
+      title: "Logout",
+      onClick: handleLogoutAndCloseMenu,
+      url: `/login`,
+    },
+  ];
 
   return (
     <Box
       className=" font-jakarta-sans md:hidden lg:hidden xl:hidden "
       sx={{ flexGrow: 1 }}
     >
-      <AppBar position="static">
-        <Toolbar>
+      <AppBar className=" bg-white" position="static">
+        <Toolbar className="border-b-2 border-[#F0F0F0] flex justify-between">
           <IconButton
             size="large"
             edge="start"
-            color="inherit"
+            color="black"
             aria-label="menu"
             sx={{ mr: 2 }}
           >
-            <MenuIcon />
+            <SearchIcon />
           </IconButton>
-          <Avatar
-            src=""
-            alt="zwitter_logo"
-            className=" object-contain h-9 w-9"
-          />
-          <Typography
-            className=" font-jakarta-sans"
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1 }}
-          >
-            Zwitter
-          </Typography>
+          <Box className="flex">
+            <Link to={"/"}>
+              <img
+                src={headerLogo}
+                alt="zwitter_logo"
+                className=" h-full w-36"
+              />
+            </Link>
+          </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip>
               <IconButton onClick={handleOpenUserMenu} color="inherit">
                 {" "}
                 <Avatar
-                  src=""
-                  alt="zwitter_logo"
-                  className=" object-contain h-9 w-9"
+                  className="h-9 w-9 bg-[#F7F9FB] object-cover rounded-full"
+                  src={user?.profileImage?.url ? user?.profileImage?.url : ""}
+                  alt={user.name}
                 />
               </IconButton>
               <Menu
-              className=" z-50"
+                className=" z-50"
                 sx={{ mt: "45px" }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
@@ -285,12 +229,16 @@ const Header = ({ navs }) => {
                   horizontal: "right",
                 }}
                 open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+                onClose={handleCloseMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
+                {settings.map((setting, index) => (
+                  <Link to={setting.url} key={index}>
+                    <MenuItem onClick={setting.onClick}>
+                      <Typography textAlign="center">
+                        {setting.title}
+                      </Typography>
+                    </MenuItem>
+                  </Link>
                 ))}
               </Menu>
             </Tooltip>

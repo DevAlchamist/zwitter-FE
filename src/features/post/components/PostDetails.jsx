@@ -51,31 +51,30 @@ const PostDetails = () => {
     dispatch(fetchCommentByPostIdAsync(params.id));
   }, [dispatch, params.id]);
   return (
-    <div className="overflow-y-auto h-[645px] w-full scroll no-scrollbar">
-      <div>
-        {postDetails && (
-          <>
-            {postDetails && (
-              <PostCard post={postDetails} updateDetailPost={true} />
-            )}
-            <div
-              key={postDetails._id}
-              className="flex justify-start  border-b-2 border-[#F0F0F0]  items-center "
+    <div>
+      {postDetails && (
+        <>
+          {postDetails && (
+            <PostCard post={postDetails} updateDetailPost={true} />
+          )}
+          <div
+            key={postDetails._id}
+            className="flex justify-start  border-b-2 border-[#F0F0F0]  items-center "
+          >
+            <form
+              onSubmit={handleSubmit((data) => {
+                dispatch(
+                  createCommentAsync({
+                    body: data.body,
+                    postId: params.id,
+                    userId: user.id,
+                  })
+                );
+                reset();
+              })}
+              className="w-full  py-3 bg-white rounded-lg px-4"
             >
-              <form
-                onSubmit={handleSubmit((data) => {
-                  dispatch(
-                    createCommentAsync({
-                      body: data.body,
-                      postId: params.id,
-                      userId: user.id,
-                    })
-                  );
-                  reset();
-                })}
-                className="w-full  py-3 bg-white rounded-lg px-4"
-              >
-                {/* <div className="flex flex-wrap -mx-3 mb-2">
+              {/* <div className="flex flex-wrap -mx-3 mb-2">
                   <strong>Reply to {postDetails.user.username}</strong>
                   <div className="w-auto flex justify-between md:w-full  px-3 mb-2 mt-2">
                     <textarea
@@ -102,66 +101,65 @@ const PostDetails = () => {
                   )}
                 </div> */}
 
-                <Box>
-                  <FormControl>
-                    <FormLabel className="flex gap-1">
-                      <Avatar
-                        className=" rounded-full bg-[#F7F9FB]"
-                        src={user.profileImage.url}
-                        alt=""
-                      />
-                      Your comment
-                    </FormLabel>
-                    <Textarea
-                      variant="soft"
-                      sx={{
-                        minWidth: 300,
-                        outline: "none",
-                        "&:focus": {
-                          outline: "none",
-                        },
-                      }}
-                      {...register("body", { required: "Type Something" })}
-                      placeholder="Type Your Comment"
-                      required
-                      minRows={2}
-                      endDecorator={
-                        <Box
-                          sx={{
-                            display: "flex",
-                            gap: "var(--Textarea-paddingBlock)",
-                            pt: "var(--Textarea-paddingBlock)",
-                            borderTop: "1px solid",
-                            borderColor: "divider",
-                            flex: "auto",
-                          }}
-                        >
-                          <Button type="submit" sx={{ ml: "auto" }}>
-                            Comment
-                          </Button>
-                        </Box>
-                      }
+              <Box>
+                <FormControl>
+                  <FormLabel className="flex gap-1">
+                    <Avatar
+                      className=" rounded-full bg-[#F7F9FB]"
+                      src={user.profileImage.url}
+                      alt=""
                     />
-                  </FormControl>
-                </Box>
-              </form>
-            </div>
-          </>
-        )}
+                    Your comment
+                  </FormLabel>
+                  <Textarea
+                    variant="soft"
+                    sx={{
+                      minWidth: 300,
+                      outline: "none",
+                      "&:focus": {
+                        outline: "none",
+                      },
+                    }}
+                    {...register("body", { required: "Type Something" })}
+                    placeholder="Type Your Comment"
+                    required
+                    minRows={2}
+                    endDecorator={
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "var(--Textarea-paddingBlock)",
+                          pt: "var(--Textarea-paddingBlock)",
+                          borderTop: "1px solid",
+                          borderColor: "divider",
+                          flex: "auto",
+                        }}
+                      >
+                        <Button type="submit" sx={{ ml: "auto" }}>
+                          Comment
+                        </Button>
+                      </Box>
+                    }
+                  />
+                </FormControl>
+              </Box>
+            </form>
+          </div>
+        </>
+      )}
 
-        {!!postComments
-          ? [...postComments]
-              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-              .map((comment) => (
-                <Comments
-                  comment={comment}
-                  currentUser={user}
-                  postDetails={postDetails}
-                  handleCommentDelete={handleCommentDelete}
-                />
-              ))
-          : null}
-      </div>
+      {!!postComments
+        ? [...postComments]
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .map((comment) => (
+              <Comments
+                comment={comment}
+                currentUser={user}
+                postDetails={postDetails}
+                handleCommentDelete={handleCommentDelete}
+              />
+            ))
+        : null}
     </div>
   );
 };
@@ -229,8 +227,8 @@ const Comments = ({
         </div>
       </div>
 
-      {(comment.userId.id === currentUser.id ||
-        postDetails.user?.id === currentUser.id) && (
+      {(comment?.userId.id === currentUser.id ||
+        postDetails?.user?.id === currentUser.id) && (
         <Box>
           <IconButton
             aria-label="post-menu"
