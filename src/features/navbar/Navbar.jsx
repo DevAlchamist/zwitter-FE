@@ -124,7 +124,7 @@ const SideBar = ({ navs }) => {
     pathname === "/" ? [""] : pathname.split("/").filter(Boolean); 
   console.log(pathnameSegments);
   return (
-    <div className="hidden w-[20%] md:inline lg:inline xl:inline">
+    <div className="hidden min-w-[500px] md:inline lg:inline xl:inline">
       <div className=" no-scrollbar px-4 font-jakarta-sans w-[100%] border-r-2 border-[#F0F0F0] shadow-xl  bg-white hidden md:flex md:flex-col h-screen items-center justify-center overflow-y-auto ">
         <div className=" z-50 pt-8 pb-8 h-full w-[100%] rounded-[12px] flex flex-col items-center gap-3">
           <img src={logo} alt="zwitter_logo" className="my-4 w-48 " />

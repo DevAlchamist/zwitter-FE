@@ -6,14 +6,11 @@ const LayoutPage = ({ children }) => {
   return (
     <div className="flex flex-col w-screen h-screen ">
       <main className="flex flex-col md:flex-row lg:flex-row xl:flex-row  font-jakarta-sans h-screen ">
-        {/* <div className="hidden min-w-[20%] xl:inline"> */}
+        <div className="hidden min-w-[20%] lg:inline xl:inline">
         <Navbar />
-        {/* </div> */}
+        </div>
         <div className="flex-grow overflow-y-auto bg-white">
           <div className="">{children}</div>
-        </div>
-        <div className="hidden min-w-[25%] xl:inline">
-          <Users />
         </div>
       </main>
     </div>

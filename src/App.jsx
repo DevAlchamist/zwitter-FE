@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkAuthAsync, selectUserChecked } from "./features/auth/authSlice";
 import PostDetailPage from "./pages/PostDetailPage";
 import Protected from "./features/auth/components/Protected";
-import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 const router = createBrowserRouter([
@@ -50,14 +49,6 @@ const router = createBrowserRouter([
     element: (
       <Protected>
         <PostDetailPage></PostDetailPage>
-      </Protected>
-    ),
-  },
-  {
-    path: "/profile/:id",
-    element: (
-      <Protected>
-        <ProfilePage></ProfilePage>
       </Protected>
     ),
   },

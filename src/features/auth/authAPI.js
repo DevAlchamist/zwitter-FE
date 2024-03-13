@@ -3,7 +3,7 @@ import axios from "axios";
 export function createUser(userData) {
   return new Promise(async (resolve, reject) => {
     axios
-      .post("http://localhost:8000/api/auth/signup", userData, {
+      .post("http://localhost:8080/api/auth/signup", userData, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -23,7 +23,7 @@ export function loginUser(loginInfo) {
   return new Promise(async (resolve, reject) => {
     try {
       axios
-        .post("http://localhost:8000/api/auth/login", loginInfo, {
+        .post("http://localhost:8080/api/auth/login", loginInfo, {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export function checkAuth() {
   return new Promise(async (resolve, reject) => {
     try {
       axios
-        .get("http://localhost:8000/api/auth/check", {
+        .get("http://localhost:8080/api/auth/check", {
           withCredentials: true,
         })
         .then((response) => {
@@ -69,7 +69,7 @@ export function logoutUser() {
   return new Promise(async (resolve, reject) => {
     try {
       axios
-        .get("http://localhost:8000/api/auth/logout", {
+        .get("http://localhost:8080/api/auth/logout", {
           withCredentials: true,
         })
         .then((response) => {
