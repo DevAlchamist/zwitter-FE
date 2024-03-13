@@ -106,7 +106,7 @@ const PostDetails = () => {
                   <FormLabel className="flex gap-1">
                     <Avatar
                       className=" rounded-full bg-[#F7F9FB]"
-                      src={user.profileImage.url}
+                      src={user?.profileImage?.url}
                       alt=""
                     />
                     Your comment
