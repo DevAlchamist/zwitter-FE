@@ -3,7 +3,7 @@ import axios from "axios";
 export function createPost(postData) {
   return new Promise((resolve, reject) =>
     axios
-      .post("http://localhost:8080/api/post", postData, {
+      .post("https://zwitter-be.vercel.app/api/post", postData, {
         withCredentials: true,
       })
       .then((response) => {
@@ -15,7 +15,7 @@ export function createPost(postData) {
 export function fetchAllPost() {
   return new Promise((resolve, reject) =>
     axios
-      .get("http://localhost:8080/api/post", {
+      .get("https://zwitter-be.vercel.app/api/post", {
         withCredentials: true,
       })
       .then((response) => {
@@ -28,7 +28,7 @@ export function updatePost(updatedPostInfo) {
   return new Promise((resolve, reject) =>
     axios
       .put(
-        "http://localhost:8080/api/post/update",
+        "https://zwitter-be.vercel.app/api/post/update",
         updatedPostInfo,
         {
           withCredentials: true,
@@ -46,7 +46,7 @@ export function updatePost(updatedPostInfo) {
 export function fetchPostById(id) {
   return new Promise((resolve, reject) =>
     axios
-      .get("http://localhost:8080/api/post/" + id)
+      .get("https://zwitter-be.vercel.app/api/post/" + id)
       .then((response) => {
         const responseData = response;
         resolve(responseData);
@@ -56,7 +56,7 @@ export function fetchPostById(id) {
 export function fetchCommentByPostId(id) {
   return new Promise((resolve, reject) =>
     axios
-      .get("http://localhost:8080/api/comment/" + id)
+      .get("https://zwitter-be.vercel.app/api/comment/" + id)
       .then((response) => {
         const responseData = response;
         resolve(responseData);
@@ -66,7 +66,7 @@ export function fetchCommentByPostId(id) {
 export function createComment(commentInfo) {
   return new Promise((resolve, reject) =>
     axios
-      .post("http://localhost:8080/api/comment", commentInfo, {
+      .post("https://zwitter-be.vercel.app/api/comment", commentInfo, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -81,7 +81,7 @@ export function createComment(commentInfo) {
 export function fetchUserAllPosts(id) {
   return new Promise((resolve, reject) =>
     axios
-      .get("http://localhost:8080/api/post/user/" + id)
+      .get("https://zwitter-be.vercel.app/api/post/user/" + id)
       .then((response) => {
         const responseData = response;
         resolve(responseData);
@@ -91,7 +91,7 @@ export function fetchUserAllPosts(id) {
 export function deletePost(id) {
   return new Promise((resolve, reject) =>
     axios
-      .delete("http://localhost:8080/api/post/delete", {
+      .delete("https://zwitter-be.vercel.app/api/post/delete", {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -107,7 +107,7 @@ export function deletePost(id) {
 export function deleteComment(id) {
   return new Promise((resolve, reject) =>
     axios
-      .delete("http://localhost:8080/api/comment/delete", {
+      .delete("https://zwitter-be.vercel.app/api/comment/delete", {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",

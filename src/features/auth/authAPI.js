@@ -3,7 +3,7 @@ import axios from "axios";
 export function createUser(userData) {
   return new Promise(async (resolve, reject) => {
     axios
-      .post("http://localhost:8080/api/auth/signup", userData, {
+      .post("https://zwitter-be.vercel.app/api/auth/signup", userData, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -22,7 +22,7 @@ export function loginUser(loginInfo) {
   return new Promise(async (resolve, reject) => {
     try {
       axios
-        .post("http://localhost:8080/api/auth/login", loginInfo, {
+        .post("https://zwitter-be.vercel.app/api/auth/login", loginInfo, {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export function checkAuth() {
   return new Promise(async (resolve, reject) => {
     try {
       axios
-        .get("http://localhost:8080/api/auth/check", {
+        .get("https://zwitter-be.vercel.app/api/auth/check", {
           withCredentials: true,
         })
         .then((response) => {
@@ -67,7 +67,7 @@ export function resetPasswordreq(email) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/reset-password-req",
+        "https://zwitter-be.vercel.app/api/auth/reset-password-req",
         { email }
       );
 
@@ -86,7 +86,7 @@ export function resetPassword(data) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/reset-password",
+        "https://zwitter-be.vercel.app/api/auth/reset-password",
         data
       );
 
@@ -105,7 +105,7 @@ export function logoutUser() {
   return new Promise(async (resolve, reject) => {
     try {
       axios
-        .get("http://localhost:8080/api/auth/logout", {
+        .get("https://zwitter-be.vercel.app/api/auth/logout", {
           withCredentials: true,
         })
         .then((response) => {
