@@ -3,7 +3,7 @@ import axios from "axios";
 export function createUser(userData) {
   return new Promise(async (resolve, reject) => {
     axios
-      .post("https://zwitter-backend.vercel.app/api/auth/signup", userData, {
+      .post("http://localhost:8000/api/auth/signup", userData, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -19,10 +19,11 @@ export function createUser(userData) {
 }
 
 export function loginUser(loginInfo) {
+  console.log(loginInfo)
   return new Promise(async (resolve, reject) => {
     try {
       axios
-        .post("https://zwitter-backend.vercel.app/api/auth/login", loginInfo, {
+        .post("http://localhost:8000/api/auth/login", loginInfo, {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
@@ -50,7 +51,7 @@ export function checkAuth() {
   return new Promise(async (resolve, reject) => {
     try {
       axios
-        .get("https://zwitter-backend.vercel.app/api/auth/check", {
+        .get("http://localhost:8000/api/auth/check", {
           withCredentials: true,
         })
         .then((response) => {
@@ -68,7 +69,7 @@ export function logoutUser() {
   return new Promise(async (resolve, reject) => {
     try {
       axios
-        .get("https://zwitter-backend.vercel.app/api/auth/logout", {
+        .get("http://localhost:8000/api/auth/logout", {
           withCredentials: true,
         })
         .then((response) => {

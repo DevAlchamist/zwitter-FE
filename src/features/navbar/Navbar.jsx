@@ -102,6 +102,7 @@ const Navbar = () => {
         </svg>
       ),
     },
+    
   ];
 
   return (

@@ -82,7 +82,7 @@ export const AllPost = () => {
         <>
           <img
             className="object-cover h-5 w-5"
-            src={URL.createObjectURL(file)}
+            src={URL?.createObjectURL(file)}
             alt={file.name}
           />
           <CloseIcon
