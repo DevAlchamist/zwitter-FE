@@ -1,21 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { resetPasswordreqAsync } from "../authSlice";
 
 const Forgot = () => {
   const { register, handleSubmit } = useForm();
-  const [data, setData] = useState("");
+  const dispatch = useDispatch();
+
   return (
     <>
       {/* component */}
       <div className=" lg:w-4/12 md:6/12 w-10/12 m-auto my-10 shadow-xl dark:shadow-black/40 border border-gray-400">
         <div className="py-8 px-8 rounded-xl">
-          <h1 className="font-medium text-2xl mt-3 text-center">Reset Password</h1>
+          <h1 className="font-medium text-2xl mt-3 text-center">
+            Reset Password
+          </h1>
           <form
             action="submit"
             className="mt-6"
-            onSubmit={handleSubmit((data) => setData(JSON.stringify(data),console.log(data)))}
+            onSubmit={handleSubmit((data) =>
+              dispatch(resetPasswordreqAsync(data.email))
+            )}
           >
             <div className="my-5 text-sm">
               <label htmlFor="email" className="block text-black">

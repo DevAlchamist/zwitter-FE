@@ -60,7 +60,6 @@ const PostCard = ({ post, updateDetailPost }) => {
 
       setLiked(updatedLiked); // Update liked state
 
-      // console.log(liked)
       dispatch(
         updatePostAsync({
           id: postId,

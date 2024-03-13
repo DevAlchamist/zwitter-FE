@@ -84,7 +84,7 @@ export const AllPost = () => {
                       <FormLabel className="flex gap-1">
                         <Avatar
                           className="rounded-full bg-[#F7F9FB]"
-                          src={user.profileImage.url}
+                          src={user?.profileImage?.url}
                           alt=""
                         />
                         {user.name}

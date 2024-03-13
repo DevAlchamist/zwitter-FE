@@ -9,7 +9,7 @@ export function fetchAllUser({ username }) {
 
   return new Promise((resolve, reject) =>
     axios
-      .get("https://zwitter-be.vercel.app/api/user?" + usernameQuery)
+      .get("http://localhost:8080/api/user?" + usernameQuery)
       .then((response) => {
         const responseData = response;
         resolve(responseData);
@@ -21,7 +21,7 @@ export function fetchUserById(userId) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await axios.get(
-        "https://zwitter-be.vercel.app/api/user/" + userId
+        "http://localhost:8080/api/user/" + userId
       );
       resolve(response);
     } catch (error) {
@@ -35,7 +35,7 @@ export function updateUser(updateUserInfo) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await axios.put(
-        "https://zwitter-be.vercel.app/api/user/update",
+        "http://localhost:8080/api/user/update",
         updateUserInfo,
         {
           withCredentials: true,

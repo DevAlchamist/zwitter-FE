@@ -33,7 +33,6 @@ const Signup = () => {
           <form
             action="submit"
             onSubmit={handleSubmit((data) => {
-              console.log(data);
               dispatch(createUserAsync(data));
             })}
             className="mt-6"
@@ -82,6 +81,31 @@ const Signup = () => {
               {errors.username && (
                 <p className="text-red-500 relative text-center">
                   {errors.username.message}
+                </p>
+              )}
+              {/* {error && (
+                  <p className="text-red-500 text-center">
+                    {error || error.message}
+                  </p>
+                )} */}
+            </div>
+            <div className="my-5 text-sm">
+              <label htmlFor="email" className="block text-black">
+                Email
+              </label>
+              <input
+                {...register("email", {
+                  required: "email is Required",
+                })}
+                type="email"
+                autoFocus=""
+                id="email"
+                className="rounded-sm px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                placeholder="email"
+              />
+              {errors.email && (
+                <p className="text-red-500 relative text-center">
+                  {errors.email.message}
                 </p>
               )}
               {/* {error && (

@@ -36,7 +36,6 @@ const Login = () => {
             action="submit"
             className="mt-6"
             onSubmit={handleSubmit((data) => {
-              console.log(data);
               dispatch(loginUserAsync(data));
             })}
           >

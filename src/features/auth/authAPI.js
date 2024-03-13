@@ -3,7 +3,7 @@ import axios from "axios";
 export function createUser(userData) {
   return new Promise(async (resolve, reject) => {
     axios
-      .post("https://zwitter-be.vercel.app/api/auth/signup", userData, {
+      .post("http://localhost:8080/api/auth/signup", userData, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -19,11 +19,10 @@ export function createUser(userData) {
 }
 
 export function loginUser(loginInfo) {
-  console.log(loginInfo)
   return new Promise(async (resolve, reject) => {
     try {
       axios
-        .post("https://zwitter-be.vercel.app/api/auth/login", loginInfo, {
+        .post("http://localhost:8080/api/auth/login", loginInfo, {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
@@ -51,7 +50,7 @@ export function checkAuth() {
   return new Promise(async (resolve, reject) => {
     try {
       axios
-        .get("https://zwitter-be.vercel.app/api/auth/check", {
+        .get("http://localhost:8080/api/auth/check", {
           withCredentials: true,
         })
         .then((response) => {
@@ -64,12 +63,49 @@ export function checkAuth() {
     }
   });
 }
+export function resetPasswordreq(email) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/reset-password-req",
+        { email }
+      );
+
+      if (response.status === 200) {
+        resolve(response.data);
+      } else {
+        reject(response.statusText);
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+export function resetPassword(data) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/reset-password",
+        data
+      );
+
+      if (response.status === 200) {
+        resolve(response.data);
+      } else {
+        reject(response.statusText);
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 
 export function logoutUser() {
   return new Promise(async (resolve, reject) => {
     try {
       axios
-        .get("https://zwitter-be.vercel.app/api/auth/logout", {
+        .get("http://localhost:8080/api/auth/logout", {
           withCredentials: true,
         })
         .then((response) => {

@@ -10,6 +10,7 @@ import { checkAuthAsync, selectUserChecked } from "./features/auth/authSlice";
 import PostDetailPage from "./pages/PostDetailPage";
 import Protected from "./features/auth/components/Protected";
 import NotFoundPage from "./pages/NotFoundPage";
+import ResetPassword from "./features/auth/components/Reset-password";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,14 @@ const router = createBrowserRouter([
     element: (
       <>
         <NotFoundPage></NotFoundPage>
+      </>
+    ),
+  },
+  {
+    path: `/reset-password`,
+    element: (
+      <>
+        <ResetPassword></ResetPassword>
       </>
     ),
   },
